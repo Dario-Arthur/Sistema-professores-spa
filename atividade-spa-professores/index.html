@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Professores (SPA)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 15px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .page {
+            display: none; 
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5); 
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a onclick="mudarPagina('home')">Página Inicial</a>
+        <a onclick="mudarPagina('prof1')">Prof. Silva</a>
+        <a onclick="mudarPagina('prof2')">Profa. Costa</a>
+        <a onclick="mudarPagina('prof3')">Prof. Souza</a>
+    </nav>
+
+    <div class="container">
+
+        <div id="home" class="page" style="display: block;">
+            <h2>Bem-vindo ao Sistema Acadêmico</h2>
+            <p>Utilize o menu acima para selecionar um professor e ver suas disciplinas ou entrar em contato.</p>
+        </div>
+
+        <div id="prof1" class="page">
+            <h2>Professor Silva</h2>
+            
+            <h3>Disciplinas Lecionadas:</h3>
+            <ul>
+                <li>Lógica de Programação (Curso: Sistemas de Informação - 1º Semestre)</li>
+                <li>Estrutura de Dados (Curso: Ciência da Computação - 3º Semestre)</li>
+            </ul>
+
+            <h3>Entrar em Contato:</h3>
+            <form onsubmit="enviarContato(event, 'Professor Silva', 'prof1')">
+                <input type="text" id="nome-prof1" placeholder="Seu Nome do Aluno" required>
+                <input type="text" id="assunto-prof1" placeholder="Assunto" required>
+                <textarea id="msg-prof1" rows="4" placeholder="Sua Mensagem" required></textarea>
+                <button type="submit">Enviar Mensagem</button>
+            </form>
+        </div>
+
+        <div id="prof2" class="page">
+            <h2>Professora Costa</h2>
+            
+            <h3>Disciplinas Lecionadas:</h3>
+            <ul>
+                <li>Banco de Dados (Curso: Análise de Sistemas - 2º Semestre)</li>
+                <li>Engenharia de Software (Curso: Sistemas de Informação - 4º Semestre)</li>
+            </ul>
+
+            <h3>Entrar em Contato:</h3>
+            <form onsubmit="enviarContato(event, 'Professora Costa', 'prof2')">
+                <input type="text" id="nome-prof2" placeholder="Seu Nome do Aluno" required>
+                <input type="text" id="assunto-prof2" placeholder="Assunto" required>
+                <textarea id="msg-prof2" rows="4" placeholder="Sua Mensagem" required></textarea>
+                <button type="submit">Enviar Mensagem</button>
+            </form>
+        </div>
+
+        <div id="prof3" class="page">
+            <h2>Professor Souza</h2>
+            
+            <h3>Disciplinas Lecionadas:</h3>
+            <ul>
+                <li>Redes de Computadores (Curso: Redes - 3º Semestre)</li>
+                <li>Segurança da Informação (Curso: Ciência da Computação - 6º Semestre)</li>
+            </ul>
+
+            <h3>Entrar em Contato:</h3>
+            <form onsubmit="enviarContato(event, 'Professor Souza', 'prof3')">
+                <input type="text" id="nome-prof3" placeholder="Seu Nome do Aluno" required>
+                <input type="text" id="assunto-prof3" placeholder="Assunto" required>
+                <textarea id="msg-prof3" rows="4" placeholder="Sua Mensagem" required></textarea>
+                <button type="submit">Enviar Mensagem</button>
+            </form>
+        </div>
+
+    </div>
+
+    <div id="meuModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal()">&times;</span>
+            <h2>Mensagem Enviada com Sucesso!</h2>
+            <p><strong>Destinatário:</strong> <span id="modal-destinatario"></span></p>
+            <p><strong>Aluno:</strong> <span id="modal-nome"></span></p>
+            <p><strong>Assunto:</strong> <span id="modal-assunto"></span></p>
+            <p><strong>Mensagem:</strong> <span id="modal-msg"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function mudarPagina(idPagina) {
+            let paginas = document.getElementsByClassName('page');
+            for (let i = 0; i < paginas.length; i++) {
+                paginas[i].style.display = 'none';
+            }
+            
+            document.getElementById(idPagina).style.display = 'block';
+        }
+
+        function enviarContato(event, nomeProfessor, idFormulario) {
+            event.preventDefault(); 
+
+            let nomeAluno = document.getElementById('nome-' + idFormulario).value;
+            let assunto = document.getElementById('assunto-' + idFormulario).value;
+            let mensagem = document.getElementById('msg-' + idFormulario).value;
+
+            document.getElementById('modal-destinatario').innerText = nomeProfessor;
+            document.getElementById('modal-nome').innerText = nomeAluno;
+            document.getElementById('modal-assunto').innerText = assunto;
+            document.getElementById('modal-msg').innerText = mensagem;
+
+            document.getElementById('meuModal').style.display = 'block';
+
+            event.target.reset();
+        }
+
+        function fecharModal() {
+            document.getElementById('meuModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
